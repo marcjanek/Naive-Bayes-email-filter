@@ -8,17 +8,22 @@ import lombok.Setter;
 @Getter
 public class Word {
     final private String name;
-    private int ham = 0, spam = 0;
+    private int ham = 0;
+    private int spam = 0;
     @Setter
-    private double probabilityOfSpam = 0, probabilityOfHam = 0;
+    private double probabilityOfSpam = 0;
+    @Setter
+    private double probabilityOfHam = 0;
 
     public Word(final String name) {
         this.name = name;
     }
-    public void incrementSpam(){
+
+    public void incrementSpam() {
         ++this.spam;
     }
-    public void incrementHam(){
+
+    public void incrementHam() {
         ++this.ham;
     }
 }

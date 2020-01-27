@@ -13,7 +13,8 @@ public class SpamFilter {
     private final Map<String, Word> map;
     private final NaiveBayes naiveBayes;
     public String regex = " |\r\n|\r|\n";
-    private int hams = 0, spams = 0;
+    private int hams = 0;
+    private int spams = 0;
 
     public SpamFilter() {
         this.map = new TreeMap<>();
@@ -33,7 +34,7 @@ public class SpamFilter {
                 wordClass.incrementHam();
             }
         }
-        if(isSpam){
+        if (isSpam) {
             ++spams;
         } else {
             ++hams;
@@ -63,16 +64,16 @@ public class SpamFilter {
 
     private String[] filter(String[] strings) {
         return Arrays.stream(strings)
-                .dropWhile(e -> e.length() == 1 && !Character.isLetter(e.charAt(0)))
-                .dropWhile(e -> {
+                .filter(e -> e.length() != 1 || Character.isLetter(e.charAt(0)))
+                .filter(e -> {
                     if (e.length() == 1)
-                        return false;
+                        return true;
                     long count = e.chars().filter(c -> !Character.isLetter(c)).count();
                     if (count > 2)
-                        return true;
-                    if (count == 0)
                         return false;
-                    return count == 1 && Character.isLetter(e.charAt(e.length() - 1));
+                    if (count == 0)
+                        return true;
+                    return !(count == 1 && Character.isLetter(e.charAt(e.length() - 1)));
                 })
                 .map(String::toLowerCase)
                 .map(e -> {
@@ -80,8 +81,8 @@ public class SpamFilter {
                         return e.substring(0, e.length() - 1);
                     return e;
                 })
-                .filter(e-> !NumberUtils.isNumber(e))
-                .filter(e->!e.equals(""))
+                .filter(e -> !NumberUtils.isNumber(e))
+                .filter(e -> !"".equals(e))
                 .toArray(String[]::new);
     }
 }

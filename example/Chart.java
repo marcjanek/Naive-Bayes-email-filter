@@ -9,6 +9,7 @@ import java.util.List;
 public class Chart {
     private static final int STEP = 10;
     private static final int ATTEMPTS = 2;
+
     public static void main(String[] args) throws Exception {
 
         List<Double> xValues = new LinkedList<>();
@@ -16,14 +17,15 @@ public class Chart {
         List<Double> spamsSuccessPercentage = new LinkedList<>();
         final Example example = new Example();
         //get data
-        for(double i=0; i<100; i+=STEP){
+        for (double i = 0; i < 100; i += STEP) {
             System.out.println(i);
             xValues.add(i);
-            double hamPercentage = 0, spamPercentage = 0;
-            for(int attempt=0;attempt<ATTEMPTS;++attempt){
-                final DTO dto = example.example(i/100);
-                hamPercentage += (double)dto.getHamsSuccess() * 100/ (double)(dto.getHamsSuccess() + dto.getHamsFails());
-                spamPercentage += (double)dto.getSpamsSuccess() * 100/ (double)(dto.getSpamsSuccess() + dto.getSpamsFails());
+            double hamPercentage = 0;
+            double spamPercentage = 0;
+            for (int attempt = 0; attempt < ATTEMPTS; ++attempt) {
+                final DTO dto = example.example(i / 100);
+                hamPercentage += (double) dto.getHamsSuccess() * 100 / (double) (dto.getHamsSuccess() + dto.getHamsFails());
+                spamPercentage += (double) dto.getSpamsSuccess() * 100 / (double) (dto.getSpamsSuccess() + dto.getSpamsFails());
             }
             hamsSuccessPercentage.add(hamPercentage / ATTEMPTS);
             spamsSuccessPercentage.add(spamPercentage / ATTEMPTS);
@@ -41,6 +43,6 @@ public class Chart {
         //save as png
         BitmapEncoder.saveBitmap(chart, "./chart", BitmapEncoder.BitmapFormat.PNG);
         //show
-        new SwingWrapper(chart).displayChart();
+        new SwingWrapper<>(chart).displayChart();
     }
 }

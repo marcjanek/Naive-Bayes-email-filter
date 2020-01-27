@@ -8,10 +8,11 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NaiveBayesTest {
-    static Map<String, Word> map = new TreeMap();
-    static NaiveBayes naiveBayes = new NaiveBayes(map);
+    private static final Map<String, Word> map = new TreeMap<>();
+    private static final NaiveBayes naiveBayes = new NaiveBayes(map);
 
     static {
         for (int i = 3; i < 100; ++i) {
@@ -40,21 +41,21 @@ public class NaiveBayesTest {
 
     @Test
     void isHam() {
-        assert map.size() != 0;
+        assertNotNull(map);
         map.forEach((k, v) -> assertEquals(Math.log10(v.getProbabilityOfHam() / v.getProbabilityOfSpam()) + Math.log10(naiveBayes.getTotalHamEmails() / naiveBayes.getTotalSpamEmails()) > 0,
                 naiveBayes.isHam(new String[]{v.getName()})));
     }
 
     @Test
     void isSpam() {
-        //assert map.size() != 0;
+        assertNotNull(map);
         map.forEach((k, v) -> assertEquals(Math.log10(v.getProbabilityOfSpam() / v.getProbabilityOfHam()) + Math.log10(naiveBayes.getTotalSpamEmails() / naiveBayes.getTotalHamEmails()) > 0,
                 naiveBayes.isSpam(new String[]{v.getName()})));
     }
 
     @Test
     void probabilityOfSpamWord() {
-        //assert map.size() != 0;
+        assertNotNull(map);
         map.forEach((k, v) ->
                 assertEquals((double) v.getSpam() / naiveBayes.getTotalSpamEmails(),
                         naiveBayes.probabilityOfSpamWord((int) naiveBayes.getTotalSpamEmails(), v))
@@ -63,7 +64,7 @@ public class NaiveBayesTest {
 
     @Test
     void probabilityOfHamWord() {
-        assert map.size() != 0;
+        assertNotNull(map);
         map.forEach((k, v) ->
                 assertEquals((double) v.getHam() / naiveBayes.getTotalHamEmails(),
                         naiveBayes.probabilityOfHamWord((int) naiveBayes.getTotalHamEmails(), v))
