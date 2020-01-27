@@ -1,3 +1,5 @@
+package example;
+
 import lombok.Value;
 import pl.edu.pw.elka.pszt.SpamFilter;
 
@@ -62,7 +64,7 @@ public class KCross extends DataLoader {
 
     @Value
     private static class Subset {
-        List<String> ham;
-        List<String> spam;
+        private List<String> ham;
+        private List<String> spam;
     }
 }

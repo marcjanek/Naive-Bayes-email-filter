@@ -1,10 +1,14 @@
+package example;
+
 import lombok.Value;
 
 @Value
 class DTO {
-    int hamsSuccess, hamsFails;
-    int spamsSuccess, spamsFails;
-    long averageTime;
+    private int hamsSuccess;
+    private int hamsFails;
+    private int spamsSuccess;
+    private int spamsFails;
+    private long averageTime;
 
     @Override
     public String toString() {

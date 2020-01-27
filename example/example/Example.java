@@ -1,3 +1,5 @@
+package example;
+
 import pl.edu.pw.elka.pszt.SpamFilter;
 
 import java.io.File;
