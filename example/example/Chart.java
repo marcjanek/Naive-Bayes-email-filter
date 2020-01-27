@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Chart {
-    private static final int STEP = 10;
-    private static final int ATTEMPTS = 2;
+    private static final int STEP = 1;
+    private static final int ATTEMPTS = 5;
 
     public static void main(String[] args) throws Exception {
 

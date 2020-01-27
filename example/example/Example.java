@@ -12,7 +12,7 @@ public class Example extends DataLoader {
 
     public static void main(String[] args) throws IOException {
         Example example = new Example();
-        final DTO dto = example.example(0.9);
+        final DTO dto = example.example(0.8);
         System.out.println(dto);
     }
 

@@ -8,12 +8,20 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class KCross extends DataLoader {
     private final static String DATA_PATH = "example/data/";
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(new KCross().run(5));
+    public static void main(String[] args) {
+        System.out.println(IntStream.range(0, 2).mapToDouble(e -> {
+            try {
+                return new KCross().run(5);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return 0;
+        }).average().orElse(0));
     }
 
     public double run(final int k) throws IOException {
@@ -29,7 +37,7 @@ public class KCross extends DataLoader {
         //divide into subsets
         List<Subset> subsets = divide(k, spam, ham);
 
-        return calculate(k, subsets);
+        return calculate(subsets);
     }
 
     private List<Subset> divide(final int k, List<String> spam, List<String> ham) {
@@ -41,15 +49,13 @@ public class KCross extends DataLoader {
         return list;
     }
 
-    private double calculate(final int k, List<Subset> list) {
-        final double sum = list.stream().mapToDouble(i -> {
+    private double calculate(final List<Subset> list) {
+        return list.stream().mapToDouble(i -> {
             final SpamFilter spamFilter = new SpamFilter();
-            list.forEach(j -> {
-                //learn
-                if (i != j) {
-                    j.ham.forEach(mail -> spamFilter.learn(mail, false));
-                    j.spam.forEach(mail -> spamFilter.learn(mail, true));
-                }
+            //learn
+            list.stream().filter(j -> i != j).forEach(j -> {
+                j.ham.forEach(mail -> spamFilter.learn(mail, false));
+                j.spam.forEach(mail -> spamFilter.learn(mail, true));
             });
             spamFilter.update();
             final int counter = i.spam.stream().mapToInt(spam -> spamFilter.isSpam(spam) ? 0 : 1).sum() +
@@ -58,8 +64,7 @@ public class KCross extends DataLoader {
             spamFilter.clear();
 
             return counter / (double) (i.ham.size() + i.spam.size());
-        }).sum();
-        return sum / (double) k;
+        }).average().orElse(Double.POSITIVE_INFINITY);
     }
 
     @Value

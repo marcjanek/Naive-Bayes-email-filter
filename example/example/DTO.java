@@ -3,7 +3,7 @@ package example;
 import lombok.Value;
 
 @Value
-class DTO {
+public class DTO {
     private int hamsSuccess;
     private int hamsFails;
     private int spamsSuccess;

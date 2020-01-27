@@ -19,11 +19,11 @@ public class NaiveBayes {
     private double totalHamEmails = 0;
 
     public boolean isHam(String[] words) {
-        return calculateHamProbability(totalHamEmails / totalSpamEmails, words) > 0;
+        return calculateHamProbability(probability(totalHamEmails, totalSpamEmails), words) > 0;
     }
 
     public boolean isSpam(String[] words) {
-        return calculateSpamProbability(totalSpamEmails / totalHamEmails, words) > 0;
+        return calculateSpamProbability(probability(totalSpamEmails, totalHamEmails), words) > 0;
     }
 
     public double probabilityOfSpamWord(int spam, Word word) {

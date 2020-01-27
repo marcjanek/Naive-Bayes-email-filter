@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class DataLoader {
+public class DataLoader {
     protected ArrayList<String> getFileValues(final String path) throws IOException {
         File folder = new File(path);
         ArrayList<String> arrayList = new ArrayList<>();
