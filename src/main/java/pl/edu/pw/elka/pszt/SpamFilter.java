@@ -66,21 +66,20 @@ public class SpamFilter {
         return Arrays.stream(strings)
                 .filter(e -> e.length() != 1 || Character.isLetter(e.charAt(0)))
                 .filter(e -> {
-                    if (e.length() == 1)
-                        return true;
-                    long count = e.chars().filter(c -> !Character.isLetter(c)).count();
-                    if (count > 2)
-                        return false;
-                    if (count == 0)
-                        return true;
-                    return !(count == 1 && Character.isLetter(e.charAt(e.length() - 1)));
+                    boolean result = true;
+                    if (e.length() != 1) {
+                        long count = e.chars().filter(c -> !Character.isLetter(c)).count();
+                        if (count > 2) {
+                            result = false;
+                        } else if (count != 0) {
+                            result = !(count == 1 && Character.isLetter(e.charAt(e.length() - 1)));
+                        }
+                    }
+                    return result;
                 })
                 .map(String::toLowerCase)
-                .map(e -> {
-                    if (e.length() > 0 && !Character.isLetter(e.charAt(e.length() - 1)))
-                        return e.substring(0, e.length() - 1);
-                    return e;
-                })
+                .map(e -> e.length() > 0 && !Character.isLetter(e.charAt(e.length() - 1)) ?
+                        e.substring(0, e.length() - 1) : e)
                 .filter(e -> !NumberUtils.isNumber(e))
                 .filter(e -> !"".equals(e))
                 .toArray(String[]::new);
